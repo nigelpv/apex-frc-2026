@@ -65,6 +65,7 @@ Controls: driver Xbox on port 0, operator Xbox on port 1 (bindings are in the
 
 ```
 cd robot
+chmod +x gradlew         # macOS / Linux, once after cloning
 ./gradlew build          # compile + unit tests
 ./gradlew simulateJava   # sim with the FUEL simulator; open AdvantageScope on localhost
 ./gradlew deploy

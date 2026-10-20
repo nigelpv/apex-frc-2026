@@ -77,19 +77,21 @@ export const apexTurret = defineFeature(function(context is Context, id is Id, d
             const rr = 6.0 + q[1] / 20 + 0.01;
             const ex = ox + rr * cos(a);
             const ey = rr * sin(a);
+            // pods lie along the tangent so they stay clear of the bearing housing
+            const pcs = coordSystem(P(ex, ey, 0), vector(cos(a), sin(a), 0), vector(0, 0, 1));
             {
                 const pid = id + ("epod" ~ ei);
                 const c = new box(0);
                 const hid = id + ("epodh" ~ ei);
-                prismR(context, nextId(pid, c), csXY(DECKT), [[ex - 1.3, ey - 0.8], [ex + 1.3, ey - 0.8], [ex + 1.3, ey + 0.8], [ex - 1.3, ey + 0.8]], 0.2, 0, 0.12);
-                for (var sx in [-1.08, 1.08])
-                    sCyl(context, hid, c, P(ex + sx, ey, DECKT - 0.1), P(ex + sx, ey, DECKT + 0.3), D10 / 2);
+                prismR(context, nextId(pid, c), pcs, [[-0.8, -1.3], [0.8, -1.3], [0.8, 1.3], [-0.8, 1.3]], 0.2, DECKT, DECKT + 0.12);
+                for (var p in encPodBolts(q[0], q[1]))
+                    sCyl(context, hid, c, P(p[0], p[1], DECKT - 0.1), P(p[0], p[1], DECKT + 0.3), D10 / 2);
                 done(context, pid, hid, "TT-06 Encoder pod base (PETG print)", C_PETG, "PETG (40% infill)");
             }
             {
                 const pid = id + ("cc" ~ ei);
                 const c = new box(0);
-                prismR(context, nextId(pid, c), csXY(DECKT + 0.12), [[ex - 0.85, ey - 0.69], [ex + 0.85, ey - 0.69], [ex + 0.85, ey + 0.69], [ex - 0.85, ey + 0.69]], 0.15, 0, 0.42);
+                prismR(context, nextId(pid, c), pcs, [[-0.69, -0.85], [0.69, -0.85], [0.69, 0.85], [-0.69, 0.85]], 0.15, DECKT + 0.12, DECKT + 0.54);
                 sCyl(context, pid, c, P(ex, ey, DECKT + 0.54), P(ex, ey, DECKT + 0.6), 0.4);
                 done(context, pid, pid + "h", "TT-07 CTRE CANcoder (turret vernier " ~ q[1] ~ "T)", C_BLK, "Nylon");
                 nodrill(context, qCreatedBy(pid, EntityType.BODY));
@@ -98,8 +100,8 @@ export const apexTurret = defineFeature(function(context is Context, id is Id, d
             const pitch = 360 / q[1];
             const base = (q[0] - 180) - floor((q[0] - 180) / pitch) * pitch;
             gearPartR(context, id, "eg" ~ ei, "TT-09 Encoder gear " ~ q[1] ~ "T 10DP (Delrin)", P(ex, ey, BRGZ1), q[1], 10, 0.25, 0.25, base - th * 120 / q[1]);
-            bl = append(bl, [P(ex - 1.08, ey, DECKT + 0.12), vector(0, 0, -1), 0.625, true]);
-            bl = append(bl, [P(ex + 1.08, ey, DECKT + 0.12), vector(0, 0, -1), 0.625, true]);
+            for (var p in encPodBolts(q[0], q[1]))
+                bl = append(bl, [P(p[0], p[1], DECKT + 0.12), vector(0, 0, -1), 0.625, true]);
         }
 
         // TT-10 cable-wrap ring (fixed): printed floor + wall above the gears, on six posts from the deck.
@@ -218,7 +220,8 @@ export const apexTurret = defineFeature(function(context is Context, id is Id, d
         const hmz = pvz + 1.525 * sin(hga * degree);
         const mx = ox - 1.6;            // flywheel motors
         const mz = 15.85;               // can bottoms (14.71) clear the service loop (top 14.605)
-        const motso = [90, 150, 210, 270];                // X60 face holes used for the spacers (2.0 in circle)
+        const mf = 4.5;                 // motor face |y| (the X60 pilot boss clears the 18T pulley)
+        const motso = [120, 180, 240, 300];               // X60 face holes used for the spacers (2.0 in circle; there is no hole at 90)
         const hgso = [120, 180];        // hood gearbox standoffs about the gearbox axis (r 0.75), clear of the sector
         const so = [[ox + 5.7, 14.15, 0.1875], [ox + 6.2, 17.75, 0.25], [ox - 5.0, 17.5, 0.25]];   // plate standoffs [x, z, r] (the low front one clears the wheels)
         const outline = [[ox - 5.5, TPZ1], [ox + 6.0, TPZ1], [ox + 6.0, 14.7], [ox + 6.6, 15.3], [ox + 6.6, 18.3], [ox + 4.1, 21.4], [ox - 3.2, 21.4], [ox - 5.5, 19.0]];
@@ -247,13 +250,17 @@ export const apexTurret = defineFeature(function(context is Context, id is Id, d
             // plate-to-turret-plate angles (front and back, outside the ball path)
             for (var seg in [[ox + 3.3, ox + 5.3], [ox - 5.4, ox - 3.6]])
             {
+                const ht = seg[0] > ox ? 1.0 : 0.9;         // the back pair is trimmed under the hood output shaft
                 plate(context, rid, "ang" ~ (sy > 0 ? "L" : "R") ~ (seg[0] > ox ? "F" : "B"), "TT-18 Plate angle 1x1x1/8 6061", csYZ(seg[0]),
-                    [[sy * 3.45, TPZ1], [sy * 2.45, TPZ1], [sy * 2.45, TPZ1 + 0.125], [sy * 3.325, TPZ1 + 0.125], [sy * 3.325, TPZ1 + 1.0], [sy * 3.45, TPZ1 + 1.0]],
+                    [[sy * 3.45, TPZ1], [sy * 2.45, TPZ1], [sy * 2.45, TPZ1 + 0.125], [sy * 3.325, TPZ1 + 0.125], [sy * 3.325, TPZ1 + ht], [sy * 3.45, TPZ1 + ht]],
                     seg[1] - seg[0], { "r" : 0 }, C_AL, "Aluminum 6061");
             }
             for (var x in [ox + 3.6, ox + 4.9, ox - 4.0, ox - 5.0])
             {
-                br = append(br, [P(x, sy * 3.7, TPZ1 + 0.5), vector(0, -sy, 0), 0.625, true]);
+                if (sy < 0 && x < ox)
+                    br = append(br, [P(x, sy * 3.325, TPZ1 + 0.5), vector(0, sy, 0), 0.625, true, true]);     // flush inside, nut outside (hood X44 above)
+                else
+                    br = append(br, [P(x, sy * 3.7, TPZ1 + 0.5), vector(0, -sy, 0), 0.625, true]);
                 br = append(br, [P(x, sy * 2.95, TPZ1 + 0.125), vector(0, 0, -1), 0.375]);
             }
         }
@@ -297,14 +304,14 @@ export const apexTurret = defineFeature(function(context is Context, id is Id, d
             htd(context, rid, "fp" ~ s, P(fx, sy * 4.02, FLYZ), vector(0, 1, 0), 18, 0.354, 0.5);
             collar(context, rid, "fc" ~ s, P(fx, sy * 4.4, FLYZ), vector(0, 1, 0), 1.125, 0.2, 0.5, 0);
             // X60 1:1 on four spacers (on its own face holes, clear of the 18T pulley and belt), bolted from inside the plate
-            kraken(context, rid + ("fm" ~ s), P(mx, sy * 4.45, mz), vector(0, -sy, 0), true);
+            kraken(context, rid + ("fm" ~ s), P(mx, sy * mf, mz), vector(0, -sy, 0), true);
             htd(context, rid, "mp" ~ s, P(mx, sy * 4.02, mz), vector(0, 1, 0), 18, 0.354, 0.315);
             beltLoop(context, rid, "fbelt" ~ s, "TT-25 Flywheel belt 9 mm HTD 5 mm 1:1 (18T:18T)", P(mx, sy * 4.02, mz), rp18, P(fx, sy * 4.02, FLYZ), rp18, vector(0, 1, 0), 0.354);
             for (var a in motso)
             {
                 const u = mx + cos(a * degree);
                 const w = mz + sin(a * degree);
-                spacer(context, rid, "fms" ~ s ~ a, "TT-26 Motor spacer 0.375 OD x 0.75", P(u, sy * 3.7, w), P(u, sy * 4.45, w), 0.1875, 0.1, C_AL);
+                spacer(context, rid, "fms" ~ s ~ a, "TT-26 Motor spacer 0.375 OD x 0.8", P(u, sy * 3.7, w), P(u, sy * mf, w), 0.1875, 0.1, C_AL);
                 br = append(br, [P(u, sy * 3.45, w), vector(0, sy, 0), 1.25]);
             }
         }

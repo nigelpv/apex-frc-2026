@@ -60,12 +60,12 @@ function radioMountHoles() returns array
 
 function switchMountHoles() returns array
 {
-    return [[-7.025, -12.25], [-7.025, -9.55]];
+    return [[-6.75, -12.55], [-6.75, -9.25]];       // past the switch's long sides
 }
 
 function brkBolts() returns array
 {
-    return [[-13.2, -1.1], [-13.2, 1.1], [-10.58, -1.1], [-10.58, 1.1]];
+    return [[-13.2, -1.1], [-13.2, 1.1], [-10.5, -1.1], [-10.5, 1.1]];      // front pair: nuts clear the front wall
 }
 
 // bellypan fixings for the electrical layout (battery sled legs)
@@ -222,7 +222,7 @@ export const apexElectrical = defineFeature(function(context is Context, id is I
             sBox(context, pid, c, P(-13.0, -1.6, DECKZ - 0.35), P(-12.875, 1.6, DECKZ));                     // rear wall
             sBox(context, pid, c, P(-10.875, -1.6, DECKZ - 0.35), P(-10.75, 1.6, DECKZ));                    // front wall
             sBox(context, pid, c, P(-13.35, -1.6, DECKZ - 0.125), P(-12.875, 1.6, DECKZ));                   // rear flange
-            sBox(context, pid, c, P(-10.875, -1.6, DECKZ - 0.125), P(-10.4, 1.6, DECKZ));                    // front flange
+            sBox(context, pid, c, P(-10.875, -1.6, DECKZ - 0.125), P(-10.2, 1.6, DECKZ));                    // front flange
             for (var b in brkBolts())
                 sCyl(context, hid, c, P(b[0], b[1], DECKZ - 0.3), P(b[0], b[1], DECKZ + 0.1), D10 / 2);
             for (var sx in [-0.485, 0.485])
@@ -292,7 +292,7 @@ export const apexElectrical = defineFeature(function(context is Context, id is I
         cotsAt(context, id + "pdh", PDH::build, "EL-07 REV Power Distribution Hub", 1.1, [0, 0, 0], vector(1, 0, 0), vector(0, 0, 1), P(PDHX, PDHY, TRAYZ));
         // right board: roboRIO 2 (USB / Ethernet edge facing the open side), CANivore next to its USB port, MPM
         cotsAt(context, id + "rio", RIO2::build, "EL-08 NI roboRIO 2.0", 0.75, [0, 0.38, 0], vector(0, 0, -1), vector(0, -1, 0), P(RIOX, RIOY, TRAYZ));
-        cotsAt(context, id + "caniv", CANIV::build, "EL-09 CTRE CANivore (drivetrain CAN FD)", 0.07, [0, -0.174, 0.04], vector(0, 0, -1), vector(0, 1, 0), P(-2.25, -12.17, TRAYZ));
+        cotsAt(context, id + "caniv", CANIV::build, "EL-09 CTRE CANivore (drivetrain CAN FD)", 0.07, [0, -0.174, 0.04], vector(0, 0, -1), vector(0, 1, 0), P(-3.15, -12.17, TRAYZ));     // clear of the board's front post
         cotsAt(context, id + "mpm", MPM::build, "EL-10 REV Mini Power Module", 0.12, [0, 0, 0], vector(1, 0, 0), vector(0, 0, 1), P(-4.25, -8.95, TRAYZ));
 
         // ================= radio, RSL, IMU =================
@@ -309,7 +309,7 @@ export const apexElectrical = defineFeature(function(context is Context, id is I
             var holes = [];
             for (var p in switchMountHoles())
                 holes = append(holes, [p[0], p[1], D10]);
-            plate(context, id, "smnt", "EL-26 Switch mount (PETG)", csXY(DECKT), [[-8.95, -12.5], [-4.65, -12.5], [-4.65, -9.3], [-8.95, -9.3]], 0.25,
+            plate(context, id, "smnt", "EL-26 Switch mount (PETG)", csXY(DECKT), [[-8.95, -12.75], [-4.65, -12.75], [-4.65, -9.05], [-8.95, -9.05]], 0.25,
                 { "r" : 0.3, "holes" : holes }, C_PETG, "PETG (40% infill)");
             for (var h in holes)
                 bl = append(bl, [P(h[0], h[1], DECKT + 0.25), vector(0, 0, -1), 0.75, true]);

@@ -374,11 +374,17 @@ function sPoly(context is Context, pid is Id, c is box, cs is CoordSystem, pts i
 // regular hexagon (across flats af) centred at (u, v)
 function hexPts(u is number, v is number, af is number) returns array
 {
+    return hexPtsR(u, v, af, 0);
+}
+
+// ... with its corners turned by rot degrees (to clock a broached hex to a shaft)
+function hexPtsR(u is number, v is number, af is number, rot is number) returns array
+{
     const r = af / sqrt(3);
     var pts = [];
     for (var i = 0; i < 6; i += 1)
     {
-        const a = (60 * i + 30) * degree;
+        const a = (60 * i + 30 + rot) * degree;
         pts = append(pts, [u + r * cos(a), v + r * sin(a)]);
     }
     return pts;
@@ -532,7 +538,7 @@ function plate(context is Context, id is Id, k is string, name is string, cs is 
         for (var i = 0; i < nh; i += 1)
             skCircle(sk, "c" ~ i, { "center" : vector(o.holes[i][0], o.holes[i][1]) * inch, "radius" : o.holes[i][2] / 2 * inch });
         for (var i = 0; i < nx; i += 1)
-            skRoundPoly(sk, "x" ~ i ~ "_", hexPts(o.hex[i][0], o.hex[i][1], o.hex[i][2] + 0.01), 0.02);      // broached hex: 0.005 per flat clearance
+            skRoundPoly(sk, "x" ~ i ~ "_", hexPtsR(o.hex[i][0], o.hex[i][1], o.hex[i][2] + 0.01, size(o.hex[i]) > 3 ? o.hex[i][3] : 0), 0.02);      // broached hex: 0.005 per flat clearance, optional clocking
         const rp = o.rp == undefined ? 0.125 : o.rp;
         for (var i = 0; i < np; i += 1)
             skRoundPoly(sk, "k" ~ i ~ "_", o.pockets[i], rp);
@@ -1133,6 +1139,15 @@ function bellyBolts() returns array
     for (var q in [[-1.2, -9.75], [1.2, -9.75]])                                   // rotor drive pod legs
         k = append(k, [ROTX + q[0], q[1]]);
     return concat(k, elecBellyPts());
+}
+
+// vernier CANcoder pod bolts: pod at angle a (deg) about the turret axis, gear teeth n; bolts on the tangent
+function encPodBolts(a is number, n is number) returns array
+{
+    const rr = 6.0 + n / 20 + 0.01;
+    const ex = TURX + rr * cos(a * degree);
+    const ey = rr * sin(a * degree);
+    return [[ex - 1.08 * sin(a * degree), ey + 1.08 * cos(a * degree)], [ex + 1.08 * sin(a * degree), ey - 1.08 * cos(a * degree)]];
 }
 
 // posts (deck -> wrap ring floor), r 8.72 about the turret axis, clear of the deck electronics

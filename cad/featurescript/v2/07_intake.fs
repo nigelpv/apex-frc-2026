@@ -58,7 +58,7 @@ export const apexIntake = defineFeature(function(context is Context, id is Id, d
             bos = append(bos, [0, 0, 0.8]);
             const pk = autoTruss(outline, bos, 1.7, 0.32, 0.34);
             plate(context, aid, "pl" ~ (sy > 0 ? "L" : "R"), "IN-0" ~ (sy > 0 ? 1 : 2) ~ " Intake arm plate " ~ (sy > 0 ? "L" : "R") ~ " 1/4 7075 (truss)",
-                armCS(sy > 0 ? IYP1 : -IYP0), outline, 0.25, { "r" : 0.2, "holes" : holes, "hex" : [[0, 0, 0.5]], "pockets" : pk, "rp" : 0.1 }, C_BLUE, "Aluminum 7075");
+                armCS(sy > 0 ? IYP1 : -IYP0), outline, 0.25, { "r" : 0.2, "holes" : holes, "hex" : [[0, 0, 0.5, ITH / degree]], "pockets" : pk, "rp" : 0.1 }, C_BLUE, "Aluminum 7075");     // hex clocked to the pivot shaft
             // roller bearings, flange outboard
             for (var q in [[IL, 0], T1, T2])
                 fbearing(context, aid, "b" ~ (sy > 0 ? "L" : "R") ~ round(q[0] * 10), armP(q[0], q[1], sy * 12.704), vector(0, sy, 0), 1.125, 0.3125, 0.5, 0);

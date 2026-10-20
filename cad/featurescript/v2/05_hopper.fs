@@ -86,11 +86,8 @@ export const apexHopper = defineFeature(function(context is Context, id is Id, d
                 holes = append(holes, [-1.0, y, D10]);
             // turret encoder pod bolts (19T, 21T)
             for (var q in [[ENC19A, 19], [ENC21A, 21]])
-            {
-                const rr = 6.0 + q[1] / 20 + 0.01;
-                for (var sx in [-1.08, 1.08])
-                    holes = append(holes, [TURX + rr * cos(q[0] * degree) + sx, rr * sin(q[0] * degree), D10]);
-            }
+                for (var p in encPodBolts(q[0], q[1]))
+                    holes = append(holes, [p[0], p[1], D10]);
             for (var y in [-6.2, 6.2])
                 holes = append(holes, [TURX - UPP, y, D10]);
             for (var y in [-6.6, 6.6])

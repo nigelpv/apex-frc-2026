@@ -90,19 +90,19 @@ export const apexWiring = defineFeature(function(context is Context, id is Id, d
 
         // ================= right riser: roboRIO power, CAN, MPM feed =================
         cable(context, id, "rr", "WR-40 Right riser (roboRIO power, CAN buses, MPM feed)", [[-4.0, -7.45, 2.5], [-4.0, -7.45, 6.6], [-4.0, -7.6, 7.3], [-6.2, -7.6, 7.3], [-6.5, -7.75, 7.6]], 0.3, C_HARN);
-        cable(context, id, "cnv", "WR-41 CANivore CAN FD (to drivetrain)", [[-2.25, -10.95, 7.25], [-2.35, -8.5, 7.25], [-2.35, -7.9, 7.25], [-3.8, -7.6, 7.3]], 0.12, C_SIG);
-        cable(context, id, "usb", "WR-42 USB roboRIO -> CANivore", [[-9.5, -13.7, 7.5], [-8.0, -13.7, 7.25], [-3.3, -13.7, 7.25], [-3.1, -13.3, 7.25]], 0.15, C_BLK);
+        cable(context, id, "cnv", "WR-41 CANivore CAN FD (to drivetrain)", [[-3.15, -11.4, 7.25], [-2.35, -10.6, 7.25], [-2.35, -8.5, 7.25], [-2.35, -7.9, 7.25], [-3.8, -7.6, 7.3]], 0.12, C_SIG);
+        cable(context, id, "usb", "WR-42 USB roboRIO -> CANivore", [[-9.5, -13.7, 7.5], [-8.0, -13.7, 7.25], [-4.6, -13.7, 7.25], [-4.6, -12.2, 7.3], [-4.35, -12.2, 7.3]], 0.15, C_BLK);
         cable(context, id, "rsl", "WR-43 RSL lead (roboRIO)", [[-11.0, -7.85, 7.6], [-11.2, -7.6, 9.5], [RSLX, RSLY, 11.55]], 0.12, C_BLK);
         cable(context, id, "pig", "WR-44 Pigeon 2 CAN FD", [[-3.75, 3.0, 2.3], [-3.54, 3.0, 2.05]], 0.12, C_SIG);
         cable(context, id, "cr1", "WR-45 CANrange (uptake) CAN (to the uptake X44 tail)", [[-7.4, 2.2, 10.65], [-6.9, 2.2, 10.75], [-6.9, 7.3, 10.0], [-8.1, 7.6, 9.6]], 0.12, C_SIG);
-        cable(context, id, "cr2", "WR-46 CANrange (hopper) CAN", [[2.3, 12.1, 19.55], [2.6, 12.6, 19.25], [2.6, 13.6, 19.05], [2.6, 13.6, 4.0], [2.1, 12.85, 4.0], [2.1, 12.55, 3.15]], 0.12, C_SIG);
+        cable(context, id, "cr2", "WR-46 CANrange (hopper) CAN", [[2.3, 12.1, 19.55], [2.6, 12.6, 19.25], [2.6, 13.6, 19.05], [2.1, 13.6, 18.7], [2.1, 13.6, 4.0], [2.1, 12.85, 4.0], [2.1, 12.55, 3.15]], 0.12, C_SIG);
 
         // ================= network + 12 V (MPM) to the deck =================
         cable(context, id, "net", "WR-50 Network + 12 V bundle (roboRIO, MPM -> switch)",
             [[-7.5, -13.2, 8.6], [-7.5, -13.45, 9.0], [-7.5, -13.45, 13.55], [-7.5, -12.45, 13.6]], 0.3, C_ETH);
         // rear deck run (under the wrap ring floor): switch -> radio (Ethernet + 12 V), rear LL4s, turret Cat6
         cable(context, id, "e3", "WR-53 Rear deck network run (switch -> radio, cameras)",
-            [[-9.05, -10.9, 13.6], [-9.6, -9.2, 13.3], [-13.1, -9.2, 13.3], [-13.1, 9.1, 13.3], [-9.6, 9.1, 13.3], [-9.05, 10.6, 13.6]], 0.3, C_ETH);
+            [[-9.05, -10.9, 13.6], [-9.6, -9.2, 13.3], [-13.1, -9.2, 13.3], [-13.1, 9.1, 13.3], [-9.6, 9.1, 13.3], [-9.6, 10.6, 13.45], [-9.05, 10.6, 13.6]], 0.3, C_ETH);
         cable(context, id, "e1", "WR-51 Ethernet rear-left LL4", [[-10.45, 10.9, 13.45], [-10.3, 9.5, 13.3], [-10.0, 9.1, 13.3]], 0.22, C_ETH);
         cable(context, id, "e2", "WR-52 Ethernet rear-right LL4", [[-10.45, -10.9, 13.45], [-10.3, -9.5, 13.3], [-10.0, -9.2, 13.3]], 0.22, C_ETH);
         cable(context, id, "e4", "WR-54 Ethernet turret LL4 (out of the turret harness)", [[TGROMX, TGROMY, 13.45], [-9.6, 8.7, 13.3], [-10.0, 9.1, 13.3]], 0.22, C_ETH);
