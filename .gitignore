@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+
+# Gradle / WPILib
+robot/.gradle/
+robot/build/
+robot/bin/
+robot/out/
+robot/ctre_sim/
+robot/logs/
+*.wpilog
+*.hoot
+robot/src/main/java/frc/robot/BuildConstants.java
+networktables.json
+simgui*.json
+
+# IDEs
+.idea/
+*.iml
+.DS_Store

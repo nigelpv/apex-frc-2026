@@ -1,0 +1,47 @@
+== Frame and mass ==
+Frame 28.0 x 27.0 in (perimeter 110 in), over bumpers 34.5 x 33.5 in
+Match mass 60.3 kg (133 lb) with bumpers and battery
+Height 21.75 in with the hood down (TRENCH clear height 22.25 in)
+
+== Hopper capacity (estimate from the CAD envelope) ==
+Open hopper 5442 in^3 + rotor bowl under the deck 809 in^3 at 0.58 packing -> about 34 FUEL (sim uses 32)
+
+== Drivetrain: SDS MK5n R1 (7.03:1), Kraken X60 FOC drive, X44 steer ==
+Free speed 4.39 m/s (14.4 ft/s), path limit 3.6 m/s
+Push force at 100 A stator 1042 N vs traction 651 N (mu 1.1): slip current 100 A keeps the wheels at the traction limit
+Max accel 10.8 m/s^2; 0 -> 6 m in 1.67 s
+
+== Intake: pivoting over-bumper arm, 23 in throat ==
+Deploy X44 75:1 -> 422 deg/s, 127 deg in 0.30 s (Motion Magic profile 0.4 s)
+Holding the arm horizontal needs 2.8 A; a 15 A stator limit lets it fold on impact
+Rollers 2 in at 2958 rpm -> surface 7.9 m/s (2.3x the 3.6 m/s drive speed, FUEL is never pushed)
+Throat 3.9 FUEL wide; in the NEUTRAL ZONE staging box (~38 FUEL/m^2) a 0.53 m strip gives ~20 FUEL per metre, so the hopper fills in about 1.6 m of sweep
+
+== Rotor serializer: 16.2 in rotor, 5 pockets on a 5.2 in circle ==
+X60 -> 18T:18T -> 12T:160T = 13.33:1; 4.0 rev/s needs 3200 rpm (55% free)
+Feed rate 20 FUEL/s; stall torque at the rotor 125 N.m (80 A stator limit -> 21 N.m to break a jam)
+Pocket speed 3.32 m/s, centripetal 8.50 g
+
+== Uptake: twin 15 mm HTD belts on 30T pulleys, X44 direct ==
+Belt speed at 85% free 16.0 m/s (command 9.0 m/s); FUEL spacing at 20/s: 17.7 in (> 5.91 in, single file without contact)
+
+== Shooter: 4 in flywheel, 2x X60 1:1, fixed hood, exit = 0.47 x surface speed ==
+  HUB at 7.0 m   exit  9.91 m/s -> 3964 rpm (68% free)
+  HUB at 3.0 m   exit  7.13 m/s -> 2852 rpm (49% free)
+  PASS at 11 m   exit 11.57 m/s -> 4627 rpm (80% free)
+Flywheel 0.0088 kg.m^2 stores 625 J at 3600 rpm; a ball takes 10.1 J -> 0.8% dip, recovered in 9 ms at 80 A (balls are 50 ms apart)
+Spin-up idle 1800 -> 3600 rpm: 0.53 s
+
+== Hood ==
+X44 93.75:1 to a 45T sector: 337 deg/s, full 25 deg range in 0.07 s; launch 45-70 deg; TRENCH guard drives it to the 45 deg stop
+
+== Turret ==
+X44 70:1 -> 516 deg/s (chassis yaw rarely exceeds 360 deg/s); 1178 rad/s^2 at 40 A; 180 deg in 0.10 s bang-bang
+Absolute angle: 19T and 21T CANcoders on the 120T ring -> unique over 598.5 deg (cable chain +/-200 deg, soft limits +/-190 deg)
+
+== Electrical: supply-current budget per match state ==
+  Sweep the NEUTRAL ZONE (drive 4x38, intake 25, rotor 10)            225 A -> bus ~ 7.9 V
+  Shoot on the move (drive 4x18, flywheel 2x30, rotor+uptake 35)      208 A -> bus ~ 8.2 V
+  Spin-up while sprinting (drive 4x25, flywheel 2x50)                 232 A -> bus ~ 7.8 V
+  Pushing match (100 A stator at low speed = ~4x30 A supply)          158 A -> bus ~ 9.2 V
+Supply limits: drive 60 A, flywheel 50 A, rotor 40 A, others 30-35 A; roboRIO 2 brownout 6.75 V

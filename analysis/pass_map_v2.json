@@ -1,0 +1,66 @@
+[
+ {
+  "dist": 4.0,
+  "launch_deg": 50.0,
+  "exit_mps": 6.44,
+  "tof_s": 1.028,
+  "apex_m": 1.66,
+  "rpm": 2576
+ },
+ {
+  "dist": 5.0,
+  "launch_deg": 50.0,
+  "exit_mps": 7.292,
+  "tof_s": 1.153,
+  "apex_m": 1.99,
+  "rpm": 2917
+ },
+ {
+  "dist": 6.0,
+  "launch_deg": 50.0,
+  "exit_mps": 8.084,
+  "tof_s": 1.268,
+  "apex_m": 2.32,
+  "rpm": 3233
+ },
+ {
+  "dist": 7.0,
+  "launch_deg": 50.0,
+  "exit_mps": 8.831,
+  "tof_s": 1.376,
+  "apex_m": 2.66,
+  "rpm": 3532
+ },
+ {
+  "dist": 8.0,
+  "launch_deg": 50.0,
+  "exit_mps": 9.546,
+  "tof_s": 1.479,
+  "apex_m": 3.01,
+  "rpm": 3818
+ },
+ {
+  "dist": 9.0,
+  "launch_deg": 50.0,
+  "exit_mps": 10.237,
+  "tof_s": 1.577,
+  "apex_m": 3.37,
+  "rpm": 4094
+ },
+ {
+  "dist": 10.0,
+  "launch_deg": 50.0,
+  "exit_mps": 10.909,
+  "tof_s": 1.672,
+  "apex_m": 3.73,
+  "rpm": 4363
+ },
+ {
+  "dist": 11.0,
+  "launch_deg": 50.0,
+  "exit_mps": 11.568,
+  "tof_s": 1.765,
+  "apex_m": 4.1,
+  "rpm": 4627
+ }
+]

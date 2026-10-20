@@ -1,0 +1,6 @@
+APEX v2 + 2 partners vs 4414-class + 2 partners      blue  915.3 | red  518.3 | APEX/first robot  584.3 vs  247.0
+APEX v2 + 2 partners vs 254-class + 2 partners       blue  902.5 | red  534.3 | APEX/first robot  564.0 vs  246.5
+APEX v2 + 2 partners vs 2910-class + 2 partners      blue  898.8 | red  505.8 | APEX/first robot  565.7 vs  216.0
+APEX v2 + 2 partners vs 2481-class + 2 partners      blue  916.8 | red  577.7 | APEX/first robot  591.7 vs  290.0
+APEX v2 replaces 4414 in a champs alliance           blue 1025.8 | red  635.3 | APEX/first robot  523.5 vs  223.0
+Ablation: 15 FUEL/s feed                             blue  575.0 | red  554.8 | APEX/first robot  278.5 vs  253.5
