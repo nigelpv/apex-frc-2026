@@ -55,8 +55,12 @@ part number (DT-, BU-, RS-, HP-, TU-, IN-, EL-, WR-). COTS parts (MK5n, Krakens,
 roboRIO 2, PDH, radio, Limelights, CANivore, battery, breaker) are imported vendor models.
 Electrical wiring is modelled as routed cables and bundles with gauge-accurate diameters.
 
-The CAD passes a full interference check: every feature against every other feature has zero
-clashes. Cable-to-cable contact only happens where branches join a trunk.
+Interference check (Onshape collision evaluation, each feature against itself and against the
+rest of the robot, intake deployed, turret at 0, hood down): bumpers, serializer, hopper,
+intake, turret and wiring are clean apart from the points where a harness tail branches off its
+trunk bundle. Fasteners are modelled at the thread minor diameter, and any part a bolt passes
+through without a hole gets a #10 clearance hole automatically, except purchased parts,
+bearings, gears, pulleys, belts, shafts and cables, so a misplaced bolt still shows as a clash.
 
 ## Robot code
 
